@@ -45,29 +45,26 @@ weather$zip_code <- as.character(weather$zip_code)
 unique(weather$events)
 # "Rain" and "rain" are both separate values, even though it is describing the
 # same event. Fix this input error in the events column.
-weather1 <- weather %>%
-  mutate(events = case_when(
-    events == "rain" ~ "Rain",
-    .default = events))
+weather$events <- tolower(weather$events)
 # Double check all unique values in the new dataframe.
-unique(weather1$events)
+unique(weather$events)
 
 # Summary function showed that there are NAs in the dataset.
 # Check number of missing values (NAs and empty strings) in the dataset
-for (var in names(weather1)) {
+for (var in names(weather)) {
   print(var)
-  print(paste0("# of NAs: ",length(is.na(weather1$var))))
-  print(paste0("# of empty strings: ",length(which(weather1[var] == ""))))
+  print(paste0("# of NAs: ",length(is.na(weather$var))))
+  print(paste0("# of empty strings: ",length(which(weather[var] == ""))))
 }
 
 # Create a new dataframe where the empty strings in events are imputed to "None".
-weather2 <- weather1 %>%
+weather1 <- weather %>%
   mutate(events = case_when(
     events == "" ~ "None",
     .default = events))
 
 # Confirm that there are no more empty strings in `events`.
-which(weather2$events == "")
+which(weather1$events == "")
 
 # Explore the `trips` dataset.
 dim(trips)
