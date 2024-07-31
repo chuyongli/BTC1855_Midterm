@@ -52,4 +52,11 @@ weather1 <- weather %>%
 # Double check all unique values in the new dataframe.
 unique(weather1$events)
 
-# 
+# Check number of missing values (NAs and empty strings) in the dataset
+for (var in names(weather1)) {
+  print(var)
+  print(paste0("# of NAs: ",length(is.na(weather$var))))
+  print(paste0("# of empty strings: ",length(which(weather1[var] == ""))))
+}
+
+
