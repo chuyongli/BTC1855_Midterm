@@ -5,7 +5,7 @@
 library(lubridate)
 library(dplyr)
 
-# Set working directory foro where to find the data files
+# Set working directory for where to find the data files
 setwd("C://Users/tpalm/Desktop/MY FILES/UofT/MBiotech/BTC1855/babs")
 
 # Read the data files and save them to objects.
@@ -21,6 +21,10 @@ summary(stations)
 
 # Convert installation date to datetime objects.
 stations$installation_date <- mdy(stations$installation_date)
+
+# Check for missing values in `stations` dataset.
+any(is.na(stations))
+# No missing values
 
 # Next, work with the `weather` dataset.
 # Explore the `weather` dataset.
@@ -47,3 +51,5 @@ weather1 <- weather %>%
     .default = events))
 # Double check all unique values in the new dataframe.
 unique(weather1$events)
+
+# 
