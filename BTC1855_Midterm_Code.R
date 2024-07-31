@@ -75,6 +75,14 @@ str(trips)
 names(trips)
 summary(trips)
 
+# Check for missing values
+any(is.na(trips))
+# Check for empty strings in the dataset
+for (var in names(trips)) {
+  print(var)
+  print(paste0("# of empty strings: ",length(which(trips[var] == ""))))
+}
+
 # Convert start and end dates to datetime objects.
 trips$start_date <- mdy_hm(trips$start_date)
 trips$end_date <- mdy_hm(trips$end_date)
