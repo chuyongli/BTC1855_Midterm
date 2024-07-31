@@ -69,3 +69,12 @@ weather2 <- weather1 %>%
 # Confirm that there are no more empty strings in `events`.
 which(weather2$events == "")
 
+# Explore the `trips` dataset.
+dim(trips)
+str(trips)
+names(trips)
+summary(trips)
+
+# Convert start and end dates to datetime objects.
+trips$start_date <- mdy_hm(trips$start_date)
+trips$end_date <- mdy_hm(trips$end_date)
