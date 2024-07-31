@@ -3,6 +3,7 @@
 
 # Libraries needed
 library(lubridate)
+library(dplyr)
 
 # Set working directory foro where to find the data files
 setwd("C://Users/tpalm/Desktop/MY FILES/UofT/MBiotech/BTC1855/babs")
@@ -36,3 +37,13 @@ weather$precipitation_inches <- as.numeric(weather$precipitation_inches)
 # Convert zip code into character strings
 weather$zip_code <- as.character(weather$zip_code)
 
+# Check all unique events.
+unique(weather$events)
+# "Rain" and "rain" are both separate values, even though it is describing the
+# same event. Fix this input error in the events column.
+weather1 <- weather %>%
+  mutate(events = case_when(
+    events == 'rain' ~ "Rain",
+    .default = events))
+# Double check all unique values in the new dataframe.
+unique(weather1$events)
