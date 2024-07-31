@@ -1,5 +1,5 @@
 # BTC1855_Midterm Code Plan
-Below outlines the code plan for BTC1855's Mideterm. I have separated the steps
+Below outlines the code plan for BTC1855's Midterm. I have separated the steps
 by branches.
 
 # main-branch

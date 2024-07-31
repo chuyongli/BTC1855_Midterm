@@ -20,3 +20,9 @@ summary(stations)
 
 # Convert installation date to datetime objects.
 stations$installation_date <- mdy(stations$installation_date)
+
+# Next, work with the `weather` dataset.
+# Explore the `weather` dataset.
+dim(weather)
+str(weather)
+summary(weather)
