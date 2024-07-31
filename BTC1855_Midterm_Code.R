@@ -26,3 +26,13 @@ stations$installation_date <- mdy(stations$installation_date)
 dim(weather)
 str(weather)
 summary(weather)
+
+# Convert date to datetime objects.
+weather$date <- mdy(weather$date)
+
+# Convert precipitation measure into numeric objects.
+weather$precipitation_inches <- as.numeric(weather$precipitation_inches)
+
+# Convert zip code into character strings
+weather$zip_code <- as.character(weather$zip_code)
+
