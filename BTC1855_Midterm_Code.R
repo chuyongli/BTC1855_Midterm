@@ -47,16 +47,25 @@ unique(weather$events)
 # same event. Fix this input error in the events column.
 weather1 <- weather %>%
   mutate(events = case_when(
-    events == 'rain' ~ "Rain",
+    events == "rain" ~ "Rain",
     .default = events))
 # Double check all unique values in the new dataframe.
 unique(weather1$events)
 
+# Summary function showed that there are NAs in the dataset.
 # Check number of missing values (NAs and empty strings) in the dataset
 for (var in names(weather1)) {
   print(var)
-  print(paste0("# of NAs: ",length(is.na(weather$var))))
+  print(paste0("# of NAs: ",length(is.na(weather1$var))))
   print(paste0("# of empty strings: ",length(which(weather1[var] == ""))))
 }
 
+# Create a new dataframe where the empty strings in events are imputed to "None".
+weather2 <- weather1 %>%
+  mutate(events = case_when(
+    events == "" ~ "None",
+    .default = events))
+
+# Confirm that there are no more empty strings in `events`.
+which(weather2$events == "")
 
