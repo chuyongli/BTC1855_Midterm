@@ -104,10 +104,14 @@ trips$end_date <- mdy_hm(trips$end_date)
 
 
 # Create a function for conducting exploratory data analysis
-eda() <- function(df) {
+eda <- function(df) {
   glimpse(df)
   freq(df)
   plot_num(df)
   print(profiling_num(df))
   describe(df)
 }
+
+# Conduct EDA for the weather and trips datasets
+eda(weather1)
+eda(trips1)
