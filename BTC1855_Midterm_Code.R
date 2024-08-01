@@ -109,4 +109,8 @@ sec_threshold <- 3*60
 # duration of less than 3 minutes.
 cancelled <- potential_cancelled %>%
   filter(duration < sec_threshold)
+# Trip IDs of trips that are likely to be "cancelled trips"
+cancelled_id <- cancelled$id
+# Number of these likely "cancelled trips"
+num_cancelled <- length(cancelled_id)
 
