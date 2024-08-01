@@ -131,3 +131,13 @@ hist(trips_valid$duration)
 head(sort(trips_valid$duration), 20)
 head(sort(trips_valid$duration, decreasing = T), 20)
 
+# Identify first and third quartiles, interquartile range, and the upper and 
+# lower limits of duration.
+duration_q1 <- quantile(trips_valid$duration, probs = 0.25)
+duration_q3 <- quantile(trips_valid$duration, probs = 0.75)
+duration_IQR <- IQR(trips_valid$duration)
+duration_upper <-  duration_q3 + 1.5 * duration_IQR
+duration_lower <- duration_q1 - 1.5 * duration_IQR
+trips_valid1 <- trips_valid %>%
+  filter(duration_lower < duration) %>%
+  filter(duration < duration_upper)
