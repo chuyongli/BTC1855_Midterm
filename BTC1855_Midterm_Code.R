@@ -138,6 +138,13 @@ duration_q3 <- quantile(trips_valid$duration, probs = 0.75)
 duration_IQR <- IQR(trips_valid$duration)
 duration_upper <-  duration_q3 + 1.5 * duration_IQR
 duration_lower <- duration_q1 - 1.5 * duration_IQR
+# Remove outliers based on IQR
 trips_valid1 <- trips_valid %>%
   filter(duration_lower < duration) %>%
   filter(duration < duration_upper)
+
+# Identify the trip id and number of trips that were removed as outliers
+outliers_trips <- trips_valid[["id"]] - trips_valid1[["id"]]
+outlier_trips_id <- setdiff(trips_valid$id, trips_valid1$id)
+num_outliers_trips <- length(outlier_trips_id)
+
