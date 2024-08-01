@@ -100,3 +100,13 @@ same_station_row <- which(trips$start_station_id == trips$end_station_id)
 potential_cancelled <- trips[same_station_row,] %>%
   select(c("id", "duration", "start_station_name", 
            "start_station_id", "end_station_name", "end_station_id", "bike_id"))
+# Find the observations where the duration is less than 3 minutes.
+# Set the threshold in minutes for potentially cancelled trips.
+min_threshold <- 3
+# Covert the threshold into seconds.
+sec_threshold <- 3*60
+# Select observations from the potentially cancelled trips dataframe that has a
+# duration of less than 3 minutes.
+cancelled <- potential_cancelled %>%
+  filter(duration < sec_threshold)
+
