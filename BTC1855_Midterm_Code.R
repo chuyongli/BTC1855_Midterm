@@ -119,3 +119,15 @@ num_cancelled <- length(cancelled_id)
 # Remove the cancelled trips from the dataset.
 trips_valid <- trips1 %>%
   filter(!(id %in% cancelled_id))
+
+# Remove outliers from trips dataset
+# Check the variables from trips dataset to determine if there are any extreme 
+# values
+summary(trips_valid)
+# Create histogram with duration variable to visually determine if there are 
+# outliers
+hist(trips_valid$duration)
+# Check extreme values on both ends of duration
+head(sort(trips_valid$duration), 20)
+head(sort(trips_valid$duration, decreasing = T), 20)
+

@@ -25,7 +25,7 @@ Step 3: Save the number of those trips and their ids in the code and in the docu
 Step 3: Remove them from the dataset.
 
 # Outliers-branch
-Identify outliers in the dataset, record the trip ids, and remove them from the dataset.
+Identify outliers in the trips, record the trip ids, and remove them from the dataset.
 Step 1: Look at the overall summary of the interested variables to determine if there are any extreme values.
 Step 2: Settle on an appropriate criteria for removing outliers.
 Step 3: Identify outliers based on the specified criteria.
