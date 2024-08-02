@@ -99,8 +99,8 @@ trips1 <- trips %>%
 which(trips1$zip_code == "")
 
 # Convert start and end dates to datetime objects.
-trips$start_date <- mdy_hm(trips$start_date)
-trips$end_date <- mdy_hm(trips$end_date)
+trips1$start_date <- mdy_hm(trips1$start_date)
+trips1$end_date <- mdy_hm(trips1$end_date)
 
 
 # Create a function for conducting exploratory data analysis
