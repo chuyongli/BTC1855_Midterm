@@ -91,13 +91,13 @@ trips1 <- trips %>%
 which(trips1$zip_code == "")
 
 # Convert start and end dates to datetime objects.
-trips$start_date <- mdy_hm(trips$start_date)
-trips$end_date <- mdy_hm(trips$end_date)
+trips1$start_date <- mdy_hm(trips1$start_date)
+trips1$end_date <- mdy_hm(trips1$end_date)
 
 # Find the observations where the trip starts and ends at the same station.
-same_station_row <- which(trips$start_station_id == trips$end_station_id)
+same_station_row <- which(trips1$start_station_id == trips1$end_station_id)
 # Select just the rows for trips that might be cancelled trips.
-potential_cancelled <- trips[same_station_row,] %>%
+potential_cancelled <- trips1[same_station_row,] %>%
   select(c("id", "duration", "start_station_name", 
            "start_station_id", "end_station_name", "end_station_id", "bike_id"))
 
