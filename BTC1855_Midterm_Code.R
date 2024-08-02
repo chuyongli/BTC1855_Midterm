@@ -156,3 +156,7 @@ trips_valid2 <- trips_valid1 %>%
     end_wdy = wday(end_date, week_start = 1),
     end_hour = hour(end_date)
   )
+
+# Filter for trips that start on a weekday (Mon - Fri)
+trips_valid2_weekday <- trips_valid2 %>%
+  filter(start_wdy < 6)
