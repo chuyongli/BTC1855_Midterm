@@ -148,3 +148,11 @@ outliers_trips <- trips_valid[["id"]] - trips_valid1[["id"]]
 outlier_trips_id <- setdiff(trips_valid$id, trips_valid1$id)
 num_outliers_trips <- length(outlier_trips_id)
 
+# Extract weekday and hour information for each trip
+trips_valid2 <- trips_valid1 %>%
+  mutate(
+    start_wdy = wday(start_date, week_start = 1),
+    start_hour = hour(start_date),
+    end_wdy = wday(end_date, week_start = 1),
+    end_hour = hour(end_date)
+  )
