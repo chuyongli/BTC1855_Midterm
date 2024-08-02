@@ -160,3 +160,6 @@ trips_valid2 <- trips_valid1 %>%
 # Filter for trips that start on a weekday (Mon - Fri)
 trips_valid2_weekday <- trips_valid2 %>%
   filter(start_wdy < 6)
+
+# Create a dataframe to track active trips per hour
+hours_tracker <- data.frame(hour = 0:23, active_trips = 0)
