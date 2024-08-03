@@ -160,3 +160,6 @@ trips_valid_month <- trips_valid1 %>% mutate(
 
 # Extract all unique bike ids
 all_bike_id <- unique(trips_valid_month$bike_id)
+
+# Create an empty dataframe to store the monthly utilization rate for each bike.
+monthly_utilization <- data.frame()
