@@ -181,7 +181,9 @@ for (i in all_bike_id) {
       month %in% c(1, 3, 5, 7, 8, 10, 12) ~ 31,
       month %in% c(4, 6, 9, 11) ~ 30,
       month == 2 ~ 28
-    ))
+    ),
+    # Create a new column in the filtered set that calculates the total number of seconds in the month based on the number of days.
+    monthly_sec = 60*60*24*num_days)
 }
 
 
