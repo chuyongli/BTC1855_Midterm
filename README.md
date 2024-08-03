@@ -43,6 +43,24 @@ Step 1:
 
 
 # Monthly-Bike-Utilization-branch
+Calculate the average utilization of bikes for each month (total time used/total time in month). Specifically for each bike for each month.
+Step 1: Extract all unique bike ids.
+Step 2: Create an empty dataframe to store the monthly utilization rate for each bike.
+Step 3: Add a new column in the trips dataset that extracts the month from the start date of the trip.
+
+Complete the following action in a loop so that it applies for each bike:
+Step 4: Filter the data for the current bike id.
+Step 5: Group the filtered data by month and calculate the total duration for each month.
+Step 6: Create a new column in the filtered set that provides the number of days in each month
+Step 7: Create a new column in the filtered set that calculates the total number of seconds in the month based on the number of days.
+Step 8: Create a new column that calculates the monthly utilization rate by dividing total duration of the trip for each month by the total number of seconds per month.
+Step 9: Create a new column that calculate the monthly utilization rate in percentages.
+Step 10: Create a new column containing the current bike id.
+Step 11: Append the monthly utilization data for the current bike to the monthly utlization rate dataset.
+End loop
+
+Step 11: Rearrange and select the relevant columns.
+Step 12: Sort the dataset by bike ID.
 
 # Correlation-branch
 

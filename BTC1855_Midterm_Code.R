@@ -157,3 +157,6 @@ num_outliers_trips <- length(outlier_trips_id)
 trips_valid_month <- trips_valid1 %>% mutate(
   month = month(start_date)
 )
+
+# Extract all unique bike ids
+all_bike_id <- unique(trips_valid_month$bike_id)
