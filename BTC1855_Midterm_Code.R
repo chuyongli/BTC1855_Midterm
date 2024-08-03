@@ -250,3 +250,9 @@ trips_valid2_weekday_end <- trips_valid2 %>%
 top10_end_station_wkdy <- get_top_rush_end_stations(rush_hours_wkdy, trips_valid2_weekday_end)
 top10_start_station_wkdy
 top10_end_station_wkdy
+
+# Top 10 most frequent starting stations and ending stations during the rush 
+# hours on weekends
+# Filter for trips that start on a weekend (Sat - Sun)
+trips_valid2_wkd <- trips_valid2 %>%
+  filter(start_wdy >= 6)
