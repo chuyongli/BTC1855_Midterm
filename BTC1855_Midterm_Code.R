@@ -288,3 +288,6 @@ rush_hours_wkd <- hours_tracker_wkd %>%
 
 # Print the peak hours
 print(rush_hours_wkd)
+
+# Top 10 Start and End stations during rush hours on weekends
+top10_start_station_wkd <- get_top_rush_start_stations(rush_hours_wkd, trips_valid2_wkd)
