@@ -190,7 +190,9 @@ for (i in all_bike_id) {
     monthly_util = total_duration / monthly_sec,
     # Add a new column that calculates the monthly utilization rate in 
     # percentages.
-    monthly_util_percent = monthly_util * 100)
+    monthly_util_percent = monthly_util * 100,
+    # Add a new column containing the current bike id.
+    bike_id = i)
   
 }
 
