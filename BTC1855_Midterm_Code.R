@@ -144,7 +144,6 @@ trips_valid1 <- trips_valid %>%
   filter(duration < duration_upper)
 
 # Identify the trip id and number of trips that were removed as outliers
-outliers_trips <- trips_valid[["id"]] - trips_valid1[["id"]]
 outlier_trips_id <- setdiff(trips_valid$id, trips_valid1$id)
 num_outliers_trips <- length(outlier_trips_id)
 
@@ -243,3 +242,9 @@ get_top_rush_end_stations <- function(rush_hours, trip_data) {
   # Return the names of the stations
   top_10_station_end$end_station_name
 }
+
+# Top 10 Start and End stations during rush hours on weekdays
+top10_start_station_wkdy <- get_top_rush_start_stations(rush_hours_wkdy, trips_valid2_weekday)
+top10_end_station_wkdy <- get_top_rush_end_stations(rush_hours_wkdy, trips_valid2_weekday)
+top10_start_station_wkdy
+top10_end_station_wkdy
