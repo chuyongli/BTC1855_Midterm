@@ -218,3 +218,28 @@ get_top_rush_start_stations <- function(rush_hours, trip_data) {
   # Return the names of the stations
   top_10_station_start$start_station_name
 }
+
+# Create a function that finds the top end stations, given a data on the rush
+# hours and a dataframe containing relevant trip data (station names, id, end 
+# hour). Returns the top 10 most frequent ending stations during the rush hour.
+get_top_rush_end_stations <- function(rush_hours, trip_data) {
+  
+  # Extract rush hours list from the provided rush hour dataframe
+  rush_hours_list <- rush_hours$hour
+  
+  # Filter for trips that ended during a rush hour and select relevant columns
+  rush_hour_station <- trip_data %>%
+    filter(end_hour %in% rush_hours_list) %>%
+    select(end_station_name, end_station_id, end_hour)
+  
+  # Calculate top 10 ending stations by counting the number of occurrences of
+  # each end station name, arrange them in descending order, and returning the
+  # first 10.
+  top_10_station_end <- rush_hour_station %>%
+    count(end_station_name) %>%
+    arrange(desc(n)) %>%
+    head(10)
+  
+  # Return the names of the stations
+  top_10_station_end$end_station_name
+}
