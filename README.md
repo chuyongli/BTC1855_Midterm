@@ -41,7 +41,19 @@ Step 4: Create a histogram using the created dataframe to visually identify the 
 Step 5: Identify the top 5 rush hours.
 
 # Top-10-Rush-Hour-branch
+Determine the 10 most frequent starting stations and ending stations during the rush hours during weekdays.
 
+Starting Station:
+Step 1: Filter weekday trips to select only those that start during a rush hour.
+Step 2: Select relevant columns (starting station name, starting station id, start hour).
+Step 3: Count the number of occurrences of each station name and arrange them in descending order.
+Step 4: Select the top 10 and save it.
+
+Ending Station:
+Step 1: Filter weekday trips to select only those that end during a rush hour.
+Step 2: Select relevant columns (ending station name, ending station id, end hour).
+Step 3: Count the number of occurrences of each station name and arrange them in descending order.
+Step 4: Select the top 10 and save it.
 
 # Top-10-Weekend-branch
 
