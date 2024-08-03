@@ -291,3 +291,9 @@ print(rush_hours_wkd)
 
 # Top 10 Start and End stations during rush hours on weekends
 top10_start_station_wkd <- get_top_rush_start_stations(rush_hours_wkd, trips_valid2_wkd)
+# Filter for trips that ended on a weekend
+trips_valid2_wkd_end <- trips_valid2 %>%
+  filter(end_wdy >= 6)
+top10_end_station_wkd <- get_top_rush_end_stations(rush_hours_wkdy, trips_valid2_weekday_end)
+top10_start_station_wkd
+top10_end_station_wkd
