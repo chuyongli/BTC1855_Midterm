@@ -183,7 +183,12 @@ for (i in all_bike_id) {
       month == 2 ~ 28
     ),
     # Create a new column in the filtered set that calculates the total number of seconds in the month based on the number of days.
-    monthly_sec = 60*60*24*num_days)
+    monthly_sec = 60*60*24*num_days,
+    # Added new column that calculates the monthly utilization rate by 
+    # dividing total duration of the trip for each month by the total number of 
+    # seconds per month.
+    monthly_util = total_duration / monthly_sec)
+  
 }
 
 
