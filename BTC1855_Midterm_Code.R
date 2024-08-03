@@ -174,4 +174,14 @@ for (i in all_bike_id) {
   monthly_bike_data <- indiv_bike_data %>%
     group_by(month) %>%
     summarise(total_duration = sum(duration))
+  # Create a new column in the filtered set that provides the number of days in 
+  # each month
+  mutate(
+    num_days = case_when(
+      month %in% c(1, 3, 5, 7, 8, 10, 12) ~ 31,
+      month %in% c(4, 6, 9, 11) ~ 30,
+      month == 2 ~ 28
+    ))
 }
+
+
