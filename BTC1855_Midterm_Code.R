@@ -168,4 +168,10 @@ for (i in all_bike_id) {
   # Filter the data for the current bike id.
   indiv_bike_data <- trips_valid3 %>%
     filter(bike_id == i)
+  
+  # Group the indiv_bike_data by month and calculate the total duration for each 
+  # month.
+  monthly_bike_data <- indiv_bike_data %>%
+    group_by(month) %>%
+    summarise(total_duration = sum(duration))
 }
