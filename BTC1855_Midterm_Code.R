@@ -196,7 +196,13 @@ for (i in all_bike_id) {
   # Append the monthly utilization data for the current bike to the monthly 
   # utilization dataset.
   monthly_utilization <- rbind(monthly_utilization, monthly_bike_data)
-  
 }
+
+# Rearrange and select the relevant columns
+monthly_utilization <- monthly_utilization %>%
+  select(bike_id, month, monthly_util, monthly_util_percent) %>%
+  arrange(bike_id)
+
+
 
 
