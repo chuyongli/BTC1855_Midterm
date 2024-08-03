@@ -50,10 +50,11 @@ Step 3: Count the number of occurrences of each station name and arrange them in
 Step 4: Select the top 10 and save it.
 
 Ending Station:
-Step 1: Filter weekday trips to select only those that end during a rush hour.
-Step 2: Select relevant columns (ending station name, ending station id, end hour).
-Step 3: Count the number of occurrences of each station name and arrange them in descending order.
-Step 4: Select the top 10 and save it.
+Step 1: Extract all trip data that ended on a weekday.
+Step 2: Filter weekday trips to select only those that end during a rush hour.
+Step 3: Select relevant columns (ending station name, ending station id, end hour).
+Step 4: Count the number of occurrences of each station name and arrange them in descending order.
+Step 5: Select the top 10 and save it.
 
 # Top-10-Weekend-branch
 

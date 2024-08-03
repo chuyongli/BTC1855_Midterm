@@ -245,6 +245,8 @@ get_top_rush_end_stations <- function(rush_hours, trip_data) {
 
 # Top 10 Start and End stations during rush hours on weekdays
 top10_start_station_wkdy <- get_top_rush_start_stations(rush_hours_wkdy, trips_valid2_weekday)
-top10_end_station_wkdy <- get_top_rush_end_stations(rush_hours_wkdy, trips_valid2_weekday)
+trips_valid2_weekday_end <- trips_valid2 %>%
+  filter(end_wdy < 6)
+top10_end_station_wkdy <- get_top_rush_end_stations(rush_hours_wkdy, trips_valid2_weekday_end)
 top10_start_station_wkdy
 top10_end_station_wkdy
