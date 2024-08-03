@@ -256,3 +256,6 @@ top10_end_station_wkdy
 # Filter for trips that start on a weekend (Sat - Sun)
 trips_valid2_wkd <- trips_valid2 %>%
   filter(start_wdy >= 6)
+
+# Create a dataframe to track active trips per hour
+hours_tracker_wkd <- data.frame(hour = 0:23, active_trips = 0)
