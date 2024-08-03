@@ -173,3 +173,15 @@ for (i in seq(nrow(trips_valid2_weekday))) {
   hours_tracker$active_trips[hours_tracker$hour == start_hour] <- 
     hours_tracker$active_trips[hours_tracker$hour == start_hour] + 1
 }
+
+# Print the updated hours_tracker to see the result
+print(hours_tracker)
+
+# Plot the data as a histogram to visualize the hours of active trips
+rush_hour_hist <- ggplot(hours_tracker, aes(x = hour, y = active_trips)) +
+  geom_col(fill = "blue") +
+  labs(title = "Active Trips Per Hour During Weekdays",
+       x = "Hour of Day",
+       y = "Number of Active Trips") +
+  theme_minimal()
+rush_hour_hist
