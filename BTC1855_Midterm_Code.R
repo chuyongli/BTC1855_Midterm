@@ -163,3 +163,13 @@ trips_valid2_weekday <- trips_valid2 %>%
 
 # Create a dataframe to track active trips per hour
 hours_tracker <- data.frame(hour = 0:23, active_trips = 0)
+
+# Count the number of active trips during the weekdays per hour
+# Go through each observation in the trips_valid2_weekday dataset
+for (i in seq(nrow(trips_valid2_weekday))) {
+  # Get the start hour for the current trip
+  start_hour <- trips_valid2_weekday$start_hour[i]
+  # Increase the corresponding hour in the hours_tracker by 1
+  hours_tracker$active_trips[hours_tracker$hour == start_hour] <- 
+    hours_tracker$active_trips[hours_tracker$hour == start_hour] + 1
+}
