@@ -281,3 +281,10 @@ rush_hour_wkd_hist <- ggplot(hours_tracker_wkd,
        y = "Number of Active Trips") +
   theme_minimal()
 
+# Identify the top 5 rush hours
+rush_hours_wkd <- hours_tracker_wkd %>%
+  arrange(desc(active_trips)) %>%
+  head(5) 
+
+# Print the peak hours
+print(rush_hours_wkd)
