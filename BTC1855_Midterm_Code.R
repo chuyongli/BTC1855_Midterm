@@ -163,3 +163,9 @@ all_bike_id <- unique(trips_valid_month$bike_id)
 
 # Create an empty dataframe to store the monthly utilization rate for each bike.
 monthly_utilization <- data.frame()
+
+for (i in all_bike_id) {
+  # Filter the data for the current bike id.
+  indiv_bike_data <- trips_valid3 %>%
+    filter(bike_id == i)
+}
