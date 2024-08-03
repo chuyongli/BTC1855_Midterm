@@ -148,3 +148,12 @@ outliers_trips <- trips_valid[["id"]] - trips_valid1[["id"]]
 outlier_trips_id <- setdiff(trips_valid$id, trips_valid1$id)
 num_outliers_trips <- length(outlier_trips_id)
 
+
+# Calculate the average utilization of each bike for each month 
+# (total time used/total time in month). 
+
+# Add a column to the trip data that identifies the month in which the trip took
+# place in.
+trips_valid_month <- trips_valid1 %>% mutate(
+  month = month(start_date)
+)
