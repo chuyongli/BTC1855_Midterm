@@ -251,49 +251,37 @@ top10_end_station_wkdy <- get_top_rush_end_stations(rush_hours_wkdy, trips_valid
 top10_start_station_wkdy
 top10_end_station_wkdy
 
-# Top 10 most frequent starting stations and ending stations during the rush 
-# hours on weekends
-# Filter for trips that start on a weekend (Sat - Sun)
-trips_valid2_wkd <- trips_valid2 %>%
-  filter(start_wdy >= 6)
+# Top 10 most frequent starting stations and ending stations during the weekend
+# Starting Station
+# Filter for trips that start on a weekend (Sat - Sun) and select the relevant 
+# columns.
+trips_valid2_wkd_start <- trips_valid2 %>%
+  filter(start_wdy >= 6) %>%
+  select(start_station_name, start_station_id, start_hour)
 
-# Create a dataframe to track active trips per hour
-hours_tracker_wkd <- data.frame(hour = 0:23, active_trips = 0)
+# Calculate top 10 starting stations by counting the number of occurrences of
+# each start station name, arrange them in descending order, and returning the
+# first 10.
 
-# Count the number of active trips during the weekend per hour
-for (i in seq(nrow(trips_valid2_wkd))) {
-  # Extract the start hour for the current trip
-  start_hour_wkd <- trips_valid2_wkd$start_hour[i]
-  # Increase the corresponding hour in the hours_tracker
-  hours_tracker_wkd$active_trips[hours_tracker_wkd$hour == start_hour_wkd] <- 
-    hours_tracker_wkd$active_trips[hours_tracker_wkd$hour == start_hour_wkd] + 1
-}
+top_10_station_start <- trips_valid2_wkd_start %>%
+  count(start_station_name) %>%
+  arrange(desc(n)) %>%
+  head(10)
+top_10_station_start
 
-# Print the updated hours_tracker to see the result
-print(hours_tracker_wkd)
-
-# Plot the data as a histogram to visualize the hours of active trips
-rush_hour_wkd_hist <- ggplot(hours_tracker_wkd, 
-                             aes(x = hour, y = active_trips)) +
-  geom_col(fill = "blue") +
-  labs(title = "Active Trips Per Hour During the Weekend",
-       x = "Hour of Day",
-       y = "Number of Active Trips") +
-  theme_minimal()
-
-# Identify the top 5 rush hours
-rush_hours_wkd <- hours_tracker_wkd %>%
-  arrange(desc(active_trips)) %>%
-  head(5) 
-
-# Print the peak hours
-print(rush_hours_wkd)
-
-# Top 10 Start and End stations during rush hours on weekends
-top10_start_station_wkd <- get_top_rush_start_stations(rush_hours_wkd, trips_valid2_wkd)
-# Filter for trips that ended on a weekend
+# Ending station
+# Filter for trips that end on a weekend (Sat - Sun) and select the relevant 
+# columns.
 trips_valid2_wkd_end <- trips_valid2 %>%
-  filter(end_wdy >= 6)
-top10_end_station_wkd <- get_top_rush_end_stations(rush_hours_wkdy, trips_valid2_weekday_end)
-top10_start_station_wkd
-top10_end_station_wkd
+  filter(end_wdy >= 6) %>%
+  select(end_station_name, end_station_id, end_hour)
+
+# Calculate top 10 ending stations by counting the number of occurrences of
+# each end station name, arrange them in descending order, and returning the
+# first 10.
+top_10_station_end <- trips_valid2_wkd_end %>%
+  count(end_station_name) %>%
+  arrange(desc(n)) %>%
+  head(10)
+top_10_station_end
+

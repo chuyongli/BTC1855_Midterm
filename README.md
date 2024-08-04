@@ -57,14 +57,18 @@ Step 4: Count the number of occurrences of each station name and arrange them in
 Step 5: Select the top 10 and save it.
 
 # Top-10-Weekend-branch
+
+Starting Station:
 Step 1: Filter for trips that start on a weekend (Sat - Sun).
-Step 2: Create an hour tracker dataframe with two columns. One that contains hours throughout a day and counts of active trip in the other.
-Step 3: Count the number of active trips during the weekend per hour based on the start hour.
-Step 4: Create a histogram using the created dataframe to visualize the rush hour(s).
-Step 5: Identify the top 5 rush hours.
-Step 6: Use the previously defined function that finds the top 10 start stations on the filtered dataframe in Step 1 to get the top 10 start stations during rush hour weekends.
-Step 7: From the dataframe that contains all trip data, filter for trips that end on a weekend.
-Step 8: Use the previously defined function that finds the top 10 end stations on this Step 7 dataframe to get the top 10 end stations during rush hour weekends.
+Step 2: Select relevant columns (starting station name, starting station id, start hour).
+Step 3: Count the number of occurrences of each station name and arrange them in descending order.
+Step 4: Select the top 10 and save it.
+
+Ending Station:
+Step 1: Filter for trips that end on a weekend (Sat - Sun).
+Step 2: Select relevant columns (starting station name, starting station id, start hour).
+Step 3: Count the number of occurrences of each station name and arrange them in descending order.
+Step 4: Select the top 10 and save it.
 
 # Monthly-Bike-Utilization-branch
 
