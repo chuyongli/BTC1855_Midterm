@@ -283,3 +283,16 @@ trip_weather_corrplot <- corrplot(correlation_matrix,
                                   tl.srt = 45,
                                   mar=c(0,0,2,0)) 
 
+# Extract weather_measures
+weather_measures <- correlation_data %>%
+  select(-daily_rentals, -total_duration) %>% names()
+
+# Convert the correlation matrix to a data frame. To make it easier to read
+# the correlation matrix dataframe, remove the correlation of each variable 
+# with itself, and correlations where both variables are in weather measures. 
+# This allows us to focus on how weather impacts bike rental patterns and not on
+# each other.
+correlation_df <- as.data.frame(as.table(correlation_matrix)) %>%
+  filter(Var1 != Var2) %>%
+  filter(!(Var1 %in% weather_measures 
+           & Var2 %in% weather_measures))
