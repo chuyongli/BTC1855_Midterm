@@ -102,7 +102,6 @@ which(trips1$zip_code == "")
 trips1$start_date <- mdy_hm(trips1$start_date)
 trips1$end_date <- mdy_hm(trips1$end_date)
 
-
 # Create a function for conducting exploratory data analysis
 eda <- function(df) {
   glimpse(df)
@@ -115,3 +114,4 @@ eda <- function(df) {
 # Conduct EDA for the weather and trips datasets
 eda(weather1)
 eda(trips1)
+
