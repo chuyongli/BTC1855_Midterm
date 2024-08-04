@@ -261,3 +261,9 @@ daily_metrics <- trips_with_weather %>%
   )
 
 View(daily_metrics)
+
+# Prepare the data metrics for correlation analysis by selecting only numeric 
+# variables.
+correlation_data <- daily_metrics %>%
+  select(-date, -city)
+
