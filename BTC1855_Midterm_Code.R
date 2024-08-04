@@ -169,3 +169,48 @@ outliers_trips <- trips_valid[["id"]] - trips_valid1[["id"]]
 outlier_trips_id <- setdiff(trips_valid$id, trips_valid1$id)
 num_outliers_trips <- length(outlier_trips_id)
 
+# Extract weekday and hour information for each trip
+trips_valid2 <- trips_valid1 %>%
+  mutate(
+    start_wdy = wday(start_date, week_start = 1),
+    start_hour = hour(start_date),
+    end_wdy = wday(end_date, week_start = 1),
+    end_hour = hour(end_date)
+  )
+
+# Filter for trips that start on a weekday (Mon - Fri)
+trips_valid2_weekday <- trips_valid2 %>%
+  filter(start_wdy < 6)
+
+# Create a dataframe to track active trips per hour
+hours_tracker <- data.frame(hour = 0:23, active_trips = 0)
+
+# Count the number of active trips during the weekdays per hour
+# Go through each observation in the trips_valid2_weekday dataset
+for (i in seq(nrow(trips_valid2_weekday))) {
+  # Get the start hour for the current trip
+  start_hour <- trips_valid2_weekday$start_hour[i]
+  # Increase the corresponding hour in the hours_tracker by 1
+  hours_tracker$active_trips[hours_tracker$hour == start_hour] <- 
+    hours_tracker$active_trips[hours_tracker$hour == start_hour] + 1
+}
+
+# Print the updated hours_tracker to see the result
+print(hours_tracker)
+
+# Plot the data as a histogram to visualize the hours of active trips
+rush_hour_hist <- ggplot(hours_tracker, aes(x = hour, y = active_trips)) +
+  geom_col(fill = "blue") +
+  labs(title = "Active Trips Per Hour During Weekdays",
+       x = "Hour of Day",
+       y = "Number of Active Trips") +
+  theme_minimal()
+rush_hour_hist
+
+# Identify the top 5 rush hours
+rush_hours_wkdy <- hours_tracker %>%
+  arrange(desc(active_trips)) %>%
+  head(5) 
+
+# Print the peak hours
+print(rush_hours_wkdy)
