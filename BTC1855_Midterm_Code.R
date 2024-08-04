@@ -272,3 +272,14 @@ correlation_matrix <- cor(correlation_data, use = "complete.obs",
                           method = "pearson")
 correlation_matrix
 
+# Visualize the correlation matrix
+trip_weather_corrplot <- corrplot(correlation_matrix, 
+                                  title = "Correlation Plot of Bike Rental Patterns\nand Weather Metrics",
+                                  method = "color", 
+                                  type = "upper", 
+                                  order = "hclust",
+                                  tl.col = "black", 
+                                  tl.cex = 0.8,
+                                  tl.srt = 45,
+                                  mar=c(0,0,2,0)) 
+
