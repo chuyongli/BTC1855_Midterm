@@ -208,3 +208,16 @@ trips_with_city2 <- trips_with_city %>%
   mutate(
     city = if_else(is.na(city), start_city, city)) %>%
   select(-start_city, -zip_code)
+
+# Check for missing values
+any(is.na(trips_valid))
+length(which(is.na(trips_with_city2)))
+# Check which columns are missing with values
+describe(trips_with_city2)
+# Missing values are only in the city column. 4955 observations have missing
+# city information. 
+# The remaining stations do not have sufficient information to identify their 
+# city or zip code. As a result, we cannot obtain weather information for them
+# for this analysis. Thus, they are removed.
+trips_with_city2 <- na.omit(trips_with_city2)
+
