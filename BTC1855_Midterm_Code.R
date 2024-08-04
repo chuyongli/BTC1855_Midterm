@@ -187,3 +187,7 @@ any(is.na(trips_with_city$city))
 missing_city_trips <- trips_with_city %>%
   filter(is.na(city) & !is.na(zip_code))
 
+# Remove duplicates from weather. This produces a dataframe that provides unique
+# city and zip codes, which can be used to update the missing city observations. 
+zip_code_city <- weather2 %>%
+  distinct(zip_code, city)
