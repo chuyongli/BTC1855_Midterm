@@ -200,3 +200,11 @@ missing_city_filled <- missing_city_trips %>%
   left_join(zip_code_city, by = "zip_code") %>%
   rename(start_city = city.y) %>%
   select(id, start_city)
+
+# Combine the original dataframe with the updated city information. Remove 
+# start city and zip code columns.
+trips_with_city2 <- trips_with_city %>%
+  left_join(missing_city_filled, by = "id") %>%
+  mutate(
+    city = if_else(is.na(city), start_city, city)) %>%
+  select(-start_city, -zip_code)
