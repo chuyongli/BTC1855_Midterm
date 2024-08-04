@@ -165,7 +165,6 @@ trips_valid1 <- trips_valid %>%
   filter(duration < duration_upper)
 
 # Identify the trip id and number of trips that were removed as outliers
-outliers_trips <- trips_valid[["id"]] - trips_valid1[["id"]]
 outlier_trips_id <- setdiff(trips_valid$id, trips_valid1$id)
 num_outliers_trips <- length(outlier_trips_id)
 
@@ -214,3 +213,61 @@ rush_hours_wkdy <- hours_tracker %>%
 
 # Print the peak hours
 print(rush_hours_wkdy)
+
+# Create a function that finds the top start stations, given a data on the rush
+# hours and a dataframe containing relevant trip data (station names, id, start 
+# hour). Returns the top 10 most frequent starting stations during the rush hour.
+get_top_rush_start_stations <- function(rush_hours, trip_data) {
+  
+  # Extract rush hours list from the provided rush hour dataframe
+  rush_hours_list <- rush_hours$hour
+  
+  # Filter for trips that started during a rush hour and select relevant columns
+  rush_hour_station <- trip_data %>%
+    filter(start_hour %in% rush_hours_list) %>%
+    select(start_station_name, start_station_id, start_hour)
+  
+  # Calculate top 10 starting stations by counting the number of occurrences of
+  # each start station name, arrange them in descending order, and returning the
+  # first 10.
+  top_10_station_start <- rush_hour_station %>%
+    count(start_station_name) %>%
+    arrange(desc(n)) %>%
+    head(10)
+  
+  # Return the names of the stations
+  top_10_station_start$start_station_name
+}
+
+# Create a function that finds the top end stations, given a data on the rush
+# hours and a dataframe containing relevant trip data (station names, id, end 
+# hour). Returns the top 10 most frequent ending stations during the rush hour.
+get_top_rush_end_stations <- function(rush_hours, trip_data) {
+  
+  # Extract rush hours list from the provided rush hour dataframe
+  rush_hours_list <- rush_hours$hour
+  
+  # Filter for trips that ended during a rush hour and select relevant columns
+  rush_hour_station <- trip_data %>%
+    filter(end_hour %in% rush_hours_list) %>%
+    select(end_station_name, end_station_id, end_hour)
+  
+  # Calculate top 10 ending stations by counting the number of occurrences of
+  # each end station name, arrange them in descending order, and returning the
+  # first 10.
+  top_10_station_end <- rush_hour_station %>%
+    count(end_station_name) %>%
+    arrange(desc(n)) %>%
+    head(10)
+  
+  # Return the names of the stations
+  top_10_station_end$end_station_name
+}
+
+# Top 10 Start and End stations during rush hours on weekdays
+top10_start_station_wkdy <- get_top_rush_start_stations(rush_hours_wkdy, trips_valid2_weekday)
+trips_valid2_weekday_end <- trips_valid2 %>%
+  filter(end_wdy < 6)
+top10_end_station_wkdy <- get_top_rush_end_stations(rush_hours_wkdy, trips_valid2_weekday_end)
+top10_start_station_wkdy
+top10_end_station_wkdy
