@@ -1,9 +1,17 @@
 # BTC1855 - Midterm
 # By Trinley Palmo
 
+# Install required libraries
+# install.packages("lubridate")
+# install.packages("dplyr")
+# install.packages("funModeling")
+# install.packages("Hmisc")
+
 # Libraries needed
 library(lubridate)
 library(dplyr)
+library(funModeling)
+library(Hmisc)
 
 # Set working directory for where to find the data files
 setwd("C://Users/tpalm/Desktop/MY FILES/UofT/MBiotech/BTC1855/babs")
@@ -93,3 +101,17 @@ which(trips1$zip_code == "")
 # Convert start and end dates to datetime objects.
 trips1$start_date <- mdy_hm(trips1$start_date)
 trips1$end_date <- mdy_hm(trips1$end_date)
+
+# Create a function for conducting exploratory data analysis
+eda <- function(df) {
+  glimpse(df)
+  freq(df)
+  plot_num(df)
+  print(profiling_num(df))
+  describe(df)
+}
+
+# Conduct EDA for the weather and trips datasets
+eda(weather1)
+eda(trips1)
+
