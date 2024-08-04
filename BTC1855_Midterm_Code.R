@@ -306,3 +306,58 @@ top_10_station_end <- trips_valid2_wkd_end %>%
   head(10)
 top_10_station_end
 
+# Calculate the average utilization of each bike for each month 
+# (total time used/total time in month). 
+
+# Add a column to the trip data that identifies the month in which the trip took
+# place in.
+trips_valid_month <- trips_valid1 %>% mutate(
+  month = month(start_date)
+)
+
+# Extract all unique bike ids
+all_bike_id <- unique(trips_valid_month$bike_id)
+
+# Create an empty dataframe to store the monthly utilization rate for each bike.
+monthly_utilization <- data.frame()
+
+for (i in all_bike_id) {
+  # Filter the data for the current bike id.
+  indiv_bike_data <- trips_valid3 %>%
+    filter(bike_id == i)
+  
+  # Group the indiv_bike_data by month and calculate the total duration for each 
+  # month.
+  monthly_bike_data <- indiv_bike_data %>%
+    group_by(month) %>%
+    summarise(total_duration = sum(duration))
+  # Create a new column in the filtered set that provides the number of days in 
+  # each month
+  mutate(
+    num_days = case_when(
+      month %in% c(1, 3, 5, 7, 8, 10, 12) ~ 31,
+      month %in% c(4, 6, 9, 11) ~ 30,
+      month == 2 ~ 28
+    ),
+    # Create a new column in the filtered set that calculates the total number of seconds in the month based on the number of days.
+    monthly_sec = 60*60*24*num_days,
+    # Add a new column that calculates the monthly utilization rate by 
+    # dividing total duration of the trip for each month by the total number of 
+    # seconds per month.
+    monthly_util = total_duration / monthly_sec,
+    # Add a new column that calculates the monthly utilization rate in 
+    # percentages.
+    monthly_util_percent = monthly_util * 100,
+    # Add a new column containing the current bike id.
+    bike_id = i)
+  # Append the monthly utilization data for the current bike to the monthly 
+  # utilization dataset.
+  monthly_utilization <- rbind(monthly_utilization, monthly_bike_data)
+}
+
+# Rearrange and select the relevant columns
+monthly_utilization <- monthly_utilization %>%
+  select(bike_id, month, monthly_util, monthly_util_percent) %>%
+  arrange(bike_id)
+monthly_utilization
+
