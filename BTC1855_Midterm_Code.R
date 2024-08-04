@@ -115,3 +115,29 @@ eda <- function(df) {
 eda(weather1)
 eda(trips1)
 
+# Find the observations where the trip starts and ends at the same station.
+same_station_row <- which(trips1$start_station_id == trips1$end_station_id)
+# Select just the rows for trips that might be cancelled trips.
+potential_cancelled <- trips1[same_station_row,] %>%
+  select(c("id", "duration", "start_station_name", 
+           "start_station_id", "end_station_name", "end_station_id", "bike_id"))
+
+# Find the observations where the duration is less than 3 minutes.
+# Set the threshold in minutes for potentially cancelled trips.
+min_threshold <- 3
+# Covert the threshold into seconds.
+sec_threshold <- 3*60
+# Select observations from the potentially cancelled trips dataframe that has a
+# duration of less than 3 minutes.
+cancelled <- potential_cancelled %>%
+  filter(duration < sec_threshold)
+
+# Trip IDs of trips that are likely to be "cancelled trips"
+cancelled_id <- cancelled$id
+# Number of these likely "cancelled trips"
+num_cancelled <- length(cancelled_id)
+
+# Remove the cancelled trips from the dataset.
+trips_valid <- trips1 %>%
+  filter(!(id %in% cancelled_id))
+
