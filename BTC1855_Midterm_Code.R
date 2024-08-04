@@ -141,3 +141,31 @@ num_cancelled <- length(cancelled_id)
 trips_valid <- trips1 %>%
   filter(!(id %in% cancelled_id))
 
+# Remove outliers from trips dataset
+# Check the variables from trips dataset to determine if there are any extreme 
+# values
+summary(trips_valid)
+# Create histogram with duration variable to visually determine if there are 
+# outliers
+hist(trips_valid$duration)
+# Check extreme values on both ends of duration
+head(sort(trips_valid$duration), 20)
+head(sort(trips_valid$duration, decreasing = T), 20)
+
+# Identify first and third quartiles, interquartile range, and the upper and 
+# lower limits of duration.
+duration_q1 <- quantile(trips_valid$duration, probs = 0.25)
+duration_q3 <- quantile(trips_valid$duration, probs = 0.75)
+duration_IQR <- IQR(trips_valid$duration)
+duration_upper <-  duration_q3 + 1.5 * duration_IQR
+duration_lower <- duration_q1 - 1.5 * duration_IQR
+# Remove outliers based on IQR
+trips_valid1 <- trips_valid %>%
+  filter(duration_lower < duration) %>%
+  filter(duration < duration_upper)
+
+# Identify the trip id and number of trips that were removed as outliers
+outliers_trips <- trips_valid[["id"]] - trips_valid1[["id"]]
+outlier_trips_id <- setdiff(trips_valid$id, trips_valid1$id)
+num_outliers_trips <- length(outlier_trips_id)
+
