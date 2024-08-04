@@ -6,12 +6,14 @@
 # install.packages("dplyr")
 # install.packages("funModeling")
 # install.packages("Hmisc")
+# install.packages("corrplot")
 
 # Libraries needed
 library(lubridate)
 library(dplyr)
 library(funModeling)
 library(Hmisc)
+library(corrplot)
 
 # Set working directory for where to find the data files
 setwd("C://Users/tpalm/Desktop/MY FILES/UofT/MBiotech/BTC1855/babs")
@@ -361,3 +363,157 @@ monthly_utilization <- monthly_utilization %>%
   arrange(bike_id)
 monthly_utilization
 
+## Correlation
+# Cleaning up the weather dataset further
+nrow(weather1)
+weather2 <- na.omit(weather1)
+nrow(weather2)
+print((1825-1301) < (0.3*1825))
+# The number of missing data is less than 30% of the original data - it's okay
+# to remove.
+
+#' Add a `city` column to trips dataset by performing a left join with the 
+#' stations dataset, based on their station names (Make sure that the station 
+#' names are either all lowercase or all uppercase so that they are 
+#' standardized). Rearrange based on starting station names.
+new_trips_valid1 <- trips_valid1 %>%
+  mutate(
+    date = as.Date(start_date),
+    start_station_name = trimws(tolower(start_station_name))) %>%
+  arrange(start_station_name)
+
+# Standardized names of stations in stations dataset. Extracted the names of
+# stations and corresponding city names.
+new_stations <- stations %>%
+  mutate(
+    name = trimws(tolower(name))
+  ) %>%
+  select(name, city)
+
+# Perform the left join to add the city information
+trips_with_city <- new_trips_valid1 %>%
+  left_join(new_stations, by = c("start_station_name" = "name"))
+
+# Check if there are any remaining missing city values.
+any(is.na(trips_with_city$city))
+
+# Extract observations that have missing city values and are NOT missing zip
+# code information.
+missing_city_trips <- trips_with_city %>%
+  filter(is.na(city) & !is.na(zip_code))
+
+# Remove duplicates from weather. This produces a dataframe that provides unique
+# city and zip codes, which can be used to update the missing city observations. 
+zip_code_city <- weather2 %>%
+  distinct(zip_code, city)
+
+# Join the zip_code_city to the extracted missing city rows. This will fill in 
+# the city based on matching zip codes. Then extract just the id of the
+# observation and the city column. This will be used to join with the previous
+# dataframe from which missing city observations were extracted from.
+missing_city_filled <- missing_city_trips %>%
+  left_join(zip_code_city, by = "zip_code") %>%
+  rename(start_city = city.y) %>%
+  select(id, start_city)
+
+# Combine the original dataframe with the updated city information. Remove 
+# start city and zip code columns.
+trips_with_city2 <- trips_with_city %>%
+  left_join(missing_city_filled, by = "id") %>%
+  mutate(
+    city = if_else(is.na(city), start_city, city)) %>%
+  select(-start_city, -zip_code)
+
+# Check for missing values
+any(is.na(trips_valid))
+length(which(is.na(trips_with_city2)))
+# Check which columns are missing with values
+describe(trips_with_city2)
+# Missing values are only in the city column. 4955 observations have missing
+# city information. 
+# The remaining stations do not have sufficient information to identify their 
+# city or zip code. As a result, we cannot obtain weather information for them
+# for this analysis. Thus, they are removed.
+trips_with_city2 <- na.omit(trips_with_city2)
+
+# Join the trips data with the weather information by date and city. Make events
+# column into a factor, after making all NA events into `None`. The factor should
+# have levels and be ordered. Convert cloud_cover into a factor as well.
+trips_with_weather <- trips_with_city2 %>%
+  left_join(weather2, by = c("date", "city")) %>%
+  mutate(events = factor(case_when(
+    is.na(events) ~ "None",
+    .default = events), levels = c("None", "fog", "rain", "fog-rain"), 
+    ordered = TRUE),
+    cloud_cover = factor(cloud_cover))
+
+# Create a new dataframe that groups the trips with weather dataframe by 
+# date and city. It should also contain summary of daily metrics of trips and
+# weather. Daily rentals counts the number of rentals for each date per city. 
+# Duration calculates the total number of seconds of the trip for each date per 
+# city. For the weather information, since all trips would have the same value 
+# if the trip occurred in the same city and the same day, the value for each 
+# weather measure is the same as the first value in the dataframe that 
+# corresponds to the specific city and date.
+daily_metrics <- trips_with_weather %>%
+  group_by(date, city) %>%
+  summarise(
+    daily_rentals = n(),
+    total_duration = sum(duration),
+    max_temperature_f = first(max_temperature_f),
+    mean_temperature_f = first(mean_temperature_f),
+    min_temperature_f = first(min_temperature_f),
+    max_visibility_miles = first(max_visibility_miles),
+    mean_visibility_miles = first(mean_visibility_miles),
+    min_visibility_miles = first(min_visibility_miles),
+    max_wind_speed_mph = first(max_wind_Speed_mph),
+    mean_wind_speed_mph = first(mean_wind_speed_mph),
+    max_gust_speed_mph = first(max_gust_speed_mph),
+    precipitation_inches = first(precipitation_inches),
+    event = first(as.numeric(events)),
+    cloud_cover = first(as.numeric(cloud_cover)),
+    .groups = "drop"
+  )
+
+View(daily_metrics)
+
+# Prepare the data metrics for correlation analysis by selecting only numeric 
+# variables.
+correlation_data <- daily_metrics %>%
+  select(-date, -city)
+
+# Compute the correlation matrix with only complete observations.
+correlation_matrix <- cor(correlation_data, use = "complete.obs", 
+                          method = "pearson")
+correlation_matrix
+
+# Visualize the correlation matrix
+trip_weather_corrplot <- corrplot(correlation_matrix, 
+                                  title = "Correlation Plot of Bike Rental Patterns\nand Weather Metrics",
+                                  method = "color", 
+                                  type = "upper", 
+                                  order = "hclust",
+                                  tl.col = "black", 
+                                  tl.cex = 0.8,
+                                  tl.srt = 45,
+                                  mar=c(0,0,2,0)) 
+
+# Extract weather_measures
+weather_measures <- correlation_data %>%
+  select(-daily_rentals, -total_duration) %>% names()
+
+# Convert the correlation matrix to a data frame. To make it easier to read
+# the correlation matrix dataframe, remove the correlation of each variable 
+# with itself, and correlations where both variables are in weather measures. 
+# This allows us to focus on how weather impacts bike rental patterns and not on
+# each other.
+correlation_df <- as.data.frame(as.table(correlation_matrix)) %>%
+  filter(Var1 != Var2) %>%
+  filter(!(Var1 %in% weather_measures 
+           & Var2 %in% weather_measures))
+
+# Find the highest positive and negative correlations
+highest_correlation <- correlation_df %>%
+  arrange(desc(abs(Freq)))
+
+highest_correlation
