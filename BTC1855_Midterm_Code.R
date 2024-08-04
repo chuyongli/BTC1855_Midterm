@@ -179,3 +179,6 @@ new_stations <- stations %>%
 trips_with_city <- new_trips_valid1 %>%
   left_join(new_stations, by = c("start_station_name" = "name"))
 
+# Check if there are any remaining missing city values.
+any(is.na(trips_with_city$city))
+
