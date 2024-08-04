@@ -232,3 +232,32 @@ trips_with_weather <- trips_with_city2 %>%
     ordered = TRUE),
     cloud_cover = factor(cloud_cover))
 
+# Create a new dataframe that groups the trips with weather dataframe by 
+# date and city. It should also contain summary of daily metrics of trips and
+# weather. Daily rentals counts the number of rentals for each date per city. 
+# Duration calculates the total number of seconds of the trip for each date per 
+# city. For the weather information, since all trips would have the same value 
+# if the trip occurred in the same city and the same day, the value for each 
+# weather measure is the same as the first value in the dataframe that 
+# corresponds to the specific city and date.
+daily_metrics <- trips_with_weather %>%
+  group_by(date, city) %>%
+  summarise(
+    daily_rentals = n(),
+    total_duration = sum(duration),
+    max_temperature_f = first(max_temperature_f),
+    mean_temperature_f = first(mean_temperature_f),
+    min_temperature_f = first(min_temperature_f),
+    max_visibility_miles = first(max_visibility_miles),
+    mean_visibility_miles = first(mean_visibility_miles),
+    min_visibility_miles = first(min_visibility_miles),
+    max_wind_speed_mph = first(max_wind_Speed_mph),
+    mean_wind_speed_mph = first(mean_wind_speed_mph),
+    max_gust_speed_mph = first(max_gust_speed_mph),
+    precipitation_inches = first(precipitation_inches),
+    event = first(as.numeric(events)),
+    cloud_cover = first(as.numeric(cloud_cover)),
+    .groups = "drop"
+  )
+
+View(daily_metrics)
