@@ -296,3 +296,9 @@ correlation_df <- as.data.frame(as.table(correlation_matrix)) %>%
   filter(Var1 != Var2) %>%
   filter(!(Var1 %in% weather_measures 
            & Var2 %in% weather_measures))
+
+# Find the highest positive and negative correlations
+highest_correlation <- correlation_df %>%
+  arrange(desc(abs(Freq)))
+
+highest_correlation
