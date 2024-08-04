@@ -271,3 +271,38 @@ trips_valid2_weekday_end <- trips_valid2 %>%
 top10_end_station_wkdy <- get_top_rush_end_stations(rush_hours_wkdy, trips_valid2_weekday_end)
 top10_start_station_wkdy
 top10_end_station_wkdy
+
+# Top 10 most frequent starting stations and ending stations during the weekend
+# Starting Station
+# Filter for trips that start on a weekend (Sat - Sun) and select the relevant 
+# columns.
+trips_valid2_wkd_start <- trips_valid2 %>%
+  filter(start_wdy >= 6) %>%
+  select(start_station_name, start_station_id, start_hour)
+
+# Calculate top 10 starting stations by counting the number of occurrences of
+# each start station name, arrange them in descending order, and returning the
+# first 10.
+
+top_10_station_start <- trips_valid2_wkd_start %>%
+  count(start_station_name) %>%
+  arrange(desc(n)) %>%
+  head(10)
+top_10_station_start
+
+# Ending station
+# Filter for trips that end on a weekend (Sat - Sun) and select the relevant 
+# columns.
+trips_valid2_wkd_end <- trips_valid2 %>%
+  filter(end_wdy >= 6) %>%
+  select(end_station_name, end_station_id, end_hour)
+
+# Calculate top 10 ending stations by counting the number of occurrences of
+# each end station name, arrange them in descending order, and returning the
+# first 10.
+top_10_station_end <- trips_valid2_wkd_end %>%
+  count(end_station_name) %>%
+  arrange(desc(n)) %>%
+  head(10)
+top_10_station_end
+

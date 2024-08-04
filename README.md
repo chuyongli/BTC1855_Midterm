@@ -58,6 +58,17 @@ Step 5: Select the top 10 and save it.
 
 # Top-10-Weekend-branch
 
+Starting Station:
+Step 1: Filter for trips that start on a weekend (Sat - Sun).
+Step 2: Select relevant columns (starting station name, starting station id, start hour).
+Step 3: Count the number of occurrences of each station name and arrange them in descending order.
+Step 4: Select the top 10 and save it.
+
+Ending Station:
+Step 1: Filter for trips that end on a weekend (Sat - Sun).
+Step 2: Select relevant columns (starting station name, starting station id, start hour).
+Step 3: Count the number of occurrences of each station name and arrange them in descending order.
+Step 4: Select the top 10 and save it.
 
 # Monthly-Bike-Utilization-branch
 
