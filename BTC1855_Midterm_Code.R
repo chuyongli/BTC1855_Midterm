@@ -1,9 +1,17 @@
 # BTC1855 - Midterm
 # By Trinley Palmo
 
+# Install required libraries
+# install.packages("lubridate")
+# install.packages("dplyr")
+# install.packages("funModeling")
+# install.packages("Hmisc")
+
 # Libraries needed
 library(lubridate)
 library(dplyr)
+library(funModeling)
+library(Hmisc)
 
 # Set working directory for where to find the data files
 setwd("C://Users/tpalm/Desktop/MY FILES/UofT/MBiotech/BTC1855/babs")
@@ -94,6 +102,19 @@ which(trips1$zip_code == "")
 trips1$start_date <- mdy_hm(trips1$start_date)
 trips1$end_date <- mdy_hm(trips1$end_date)
 
+# Create a function for conducting exploratory data analysis
+eda <- function(df) {
+  glimpse(df)
+  freq(df)
+  plot_num(df)
+  print(profiling_num(df))
+  describe(df)
+}
+
+# Conduct EDA for the weather and trips datasets
+eda(weather1)
+eda(trips1)
+
 # Find the observations where the trip starts and ends at the same station.
 same_station_row <- which(trips1$start_station_id == trips1$end_station_id)
 # Select just the rows for trips that might be cancelled trips.
@@ -144,10 +165,146 @@ trips_valid1 <- trips_valid %>%
   filter(duration < duration_upper)
 
 # Identify the trip id and number of trips that were removed as outliers
-outliers_trips <- trips_valid[["id"]] - trips_valid1[["id"]]
 outlier_trips_id <- setdiff(trips_valid$id, trips_valid1$id)
 num_outliers_trips <- length(outlier_trips_id)
 
+# Extract weekday and hour information for each trip
+trips_valid2 <- trips_valid1 %>%
+  mutate(
+    start_wdy = wday(start_date, week_start = 1),
+    start_hour = hour(start_date),
+    end_wdy = wday(end_date, week_start = 1),
+    end_hour = hour(end_date)
+  )
+
+# Filter for trips that start on a weekday (Mon - Fri)
+trips_valid2_weekday <- trips_valid2 %>%
+  filter(start_wdy < 6)
+
+# Create a dataframe to track active trips per hour
+hours_tracker <- data.frame(hour = 0:23, active_trips = 0)
+
+# Count the number of active trips during the weekdays per hour
+# Go through each observation in the trips_valid2_weekday dataset
+for (i in seq(nrow(trips_valid2_weekday))) {
+  # Get the start hour for the current trip
+  start_hour <- trips_valid2_weekday$start_hour[i]
+  # Increase the corresponding hour in the hours_tracker by 1
+  hours_tracker$active_trips[hours_tracker$hour == start_hour] <- 
+    hours_tracker$active_trips[hours_tracker$hour == start_hour] + 1
+}
+
+# Print the updated hours_tracker to see the result
+print(hours_tracker)
+
+# Plot the data as a histogram to visualize the hours of active trips
+rush_hour_hist <- ggplot(hours_tracker, aes(x = hour, y = active_trips)) +
+  geom_col(fill = "blue") +
+  labs(title = "Active Trips Per Hour During Weekdays",
+       x = "Hour of Day",
+       y = "Number of Active Trips") +
+  theme_minimal()
+rush_hour_hist
+
+# Identify the top 5 rush hours
+rush_hours_wkdy <- hours_tracker %>%
+  arrange(desc(active_trips)) %>%
+  head(5) 
+
+# Print the peak hours
+print(rush_hours_wkdy)
+
+# Create a function that finds the top start stations, given a data on the rush
+# hours and a dataframe containing relevant trip data (station names, id, start 
+# hour). Returns the top 10 most frequent starting stations during the rush hour.
+get_top_rush_start_stations <- function(rush_hours, trip_data) {
+  
+  # Extract rush hours list from the provided rush hour dataframe
+  rush_hours_list <- rush_hours$hour
+  
+  # Filter for trips that started during a rush hour and select relevant columns
+  rush_hour_station <- trip_data %>%
+    filter(start_hour %in% rush_hours_list) %>%
+    select(start_station_name, start_station_id, start_hour)
+  
+  # Calculate top 10 starting stations by counting the number of occurrences of
+  # each start station name, arrange them in descending order, and returning the
+  # first 10.
+  top_10_station_start <- rush_hour_station %>%
+    count(start_station_name) %>%
+    arrange(desc(n)) %>%
+    head(10)
+  
+  # Return the names of the stations
+  top_10_station_start$start_station_name
+}
+
+# Create a function that finds the top end stations, given a data on the rush
+# hours and a dataframe containing relevant trip data (station names, id, end 
+# hour). Returns the top 10 most frequent ending stations during the rush hour.
+get_top_rush_end_stations <- function(rush_hours, trip_data) {
+  
+  # Extract rush hours list from the provided rush hour dataframe
+  rush_hours_list <- rush_hours$hour
+  
+  # Filter for trips that ended during a rush hour and select relevant columns
+  rush_hour_station <- trip_data %>%
+    filter(end_hour %in% rush_hours_list) %>%
+    select(end_station_name, end_station_id, end_hour)
+  
+  # Calculate top 10 ending stations by counting the number of occurrences of
+  # each end station name, arrange them in descending order, and returning the
+  # first 10.
+  top_10_station_end <- rush_hour_station %>%
+    count(end_station_name) %>%
+    arrange(desc(n)) %>%
+    head(10)
+  
+  # Return the names of the stations
+  top_10_station_end$end_station_name
+}
+
+# Top 10 Start and End stations during rush hours on weekdays
+top10_start_station_wkdy <- get_top_rush_start_stations(rush_hours_wkdy, trips_valid2_weekday)
+trips_valid2_weekday_end <- trips_valid2 %>%
+  filter(end_wdy < 6)
+top10_end_station_wkdy <- get_top_rush_end_stations(rush_hours_wkdy, trips_valid2_weekday_end)
+top10_start_station_wkdy
+top10_end_station_wkdy
+
+# Top 10 most frequent starting stations and ending stations during the weekend
+# Starting Station
+# Filter for trips that start on a weekend (Sat - Sun) and select the relevant 
+# columns.
+trips_valid2_wkd_start <- trips_valid2 %>%
+  filter(start_wdy >= 6) %>%
+  select(start_station_name, start_station_id, start_hour)
+
+# Calculate top 10 starting stations by counting the number of occurrences of
+# each start station name, arrange them in descending order, and returning the
+# first 10.
+
+top_10_station_start <- trips_valid2_wkd_start %>%
+  count(start_station_name) %>%
+  arrange(desc(n)) %>%
+  head(10)
+top_10_station_start
+
+# Ending station
+# Filter for trips that end on a weekend (Sat - Sun) and select the relevant 
+# columns.
+trips_valid2_wkd_end <- trips_valid2 %>%
+  filter(end_wdy >= 6) %>%
+  select(end_station_name, end_station_id, end_hour)
+
+# Calculate top 10 ending stations by counting the number of occurrences of
+# each end station name, arrange them in descending order, and returning the
+# first 10.
+top_10_station_end <- trips_valid2_wkd_end %>%
+  count(end_station_name) %>%
+  arrange(desc(n)) %>%
+  head(10)
+top_10_station_end
 
 # Calculate the average utilization of each bike for each month 
 # (total time used/total time in month). 
@@ -202,7 +359,5 @@ for (i in all_bike_id) {
 monthly_utilization <- monthly_utilization %>%
   select(bike_id, month, monthly_util, monthly_util_percent) %>%
   arrange(bike_id)
-
-
-
+monthly_utilization
 
