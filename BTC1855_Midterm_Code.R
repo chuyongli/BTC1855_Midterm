@@ -182,3 +182,8 @@ trips_with_city <- new_trips_valid1 %>%
 # Check if there are any remaining missing city values.
 any(is.na(trips_with_city$city))
 
+# Extract observations that have missing city values and are NOT missing zip
+# code information.
+missing_city_trips <- trips_with_city %>%
+  filter(is.na(city) & !is.na(zip_code))
+
