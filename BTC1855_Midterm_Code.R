@@ -191,3 +191,12 @@ missing_city_trips <- trips_with_city %>%
 # city and zip codes, which can be used to update the missing city observations. 
 zip_code_city <- weather2 %>%
   distinct(zip_code, city)
+
+# Join the zip_code_city to the extracted missing city rows. This will fill in 
+# the city based on matching zip codes. Then extract just the id of the
+# observation and the city column. This will be used to join with the previous
+# dataframe from which missing city observations were extracted from.
+missing_city_filled <- missing_city_trips %>%
+  left_join(zip_code_city, by = "zip_code") %>%
+  rename(start_city = city.y) %>%
+  select(id, start_city)
