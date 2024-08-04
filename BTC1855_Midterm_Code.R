@@ -148,3 +148,23 @@ outliers_trips <- trips_valid[["id"]] - trips_valid1[["id"]]
 outlier_trips_id <- setdiff(trips_valid$id, trips_valid1$id)
 num_outliers_trips <- length(outlier_trips_id)
 
+## Correlation
+# Cleaning up the weather dataset further
+nrow(weather1)
+weather2 <- na.omit(weather1)
+nrow(weather2)
+print((1825-1301) < (0.3*1825))
+# The number of missing data is less than 30% of the original data - it's okay
+# to remove.
+
+#' Add a `city` column to trips dataset by performing a left join with the 
+#' stations dataset, based on their station names (Make sure that the station 
+#' names are either all lowercase or all uppercase so that they are 
+#' standardized). Rearrange based on starting station names.
+new_trips_valid1 <- trips_valid1 %>%
+  mutate(
+    date = as.Date(start_date),
+    start_station_name = trimws(tolower(start_station_name))) %>%
+  arrange(start_station_name)
+
+
