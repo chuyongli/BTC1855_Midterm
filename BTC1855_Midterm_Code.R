@@ -267,3 +267,8 @@ View(daily_metrics)
 correlation_data <- daily_metrics %>%
   select(-date, -city)
 
+# Compute the correlation matrix with only complete observations.
+correlation_matrix <- cor(correlation_data, use = "complete.obs", 
+                          method = "pearson")
+correlation_matrix
+
