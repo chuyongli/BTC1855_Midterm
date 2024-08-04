@@ -175,3 +175,7 @@ new_stations <- stations %>%
   ) %>%
   select(name, city)
 
+# Perform the left join to add the city information
+trips_with_city <- new_trips_valid1 %>%
+  left_join(new_stations, by = c("start_station_name" = "name"))
+
