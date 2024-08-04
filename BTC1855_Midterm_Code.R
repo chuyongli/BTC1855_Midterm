@@ -167,4 +167,11 @@ new_trips_valid1 <- trips_valid1 %>%
     start_station_name = trimws(tolower(start_station_name))) %>%
   arrange(start_station_name)
 
+# Standardized names of stations in stations dataset. Extracted the names of
+# stations and corresponding city names.
+new_stations <- stations %>%
+  mutate(
+    name = trimws(tolower(name))
+  ) %>%
+  select(name, city)
 
