@@ -221,3 +221,14 @@ describe(trips_with_city2)
 # for this analysis. Thus, they are removed.
 trips_with_city2 <- na.omit(trips_with_city2)
 
+# Join the trips data with the weather information by date and city. Make events
+# column into a factor, after making all NA events into `None`. The factor should
+# have levels and be ordered. Convert cloud_cover into a factor as well.
+trips_with_weather <- trips_with_city2 %>%
+  left_join(weather2, by = c("date", "city")) %>%
+  mutate(events = factor(case_when(
+    is.na(events) ~ "None",
+    .default = events), levels = c("None", "fog", "rain", "fog-rain"), 
+    ordered = TRUE),
+    cloud_cover = factor(cloud_cover))
+
