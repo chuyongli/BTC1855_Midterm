@@ -34,15 +34,61 @@ Step 5: Remove them from the dataset.
 
 # Highest-Volume-Weekday-branch
 Determine the highest volume hours on weekdays. In other words, the hours of weekdays where the trip volume is highest.
-Step 1:
+Step 1: Extract all trip data that occurred on a weekday.
+Step 2: Create a dataframe with two columns. One that contains hours throughout a day and counts of active trip in the other.
+Step 3: For the starting hour of each trip, increase their count by 1 in the dataframe created in step 2.
+Step 4: Create a histogram using the created dataframe to visually identify the rush hour.
+Step 5: Identify the top 5 rush hours.
 
 # Top-10-Rush-Hour-branch
+Determine the 10 most frequent starting stations and ending stations during the rush hours during weekdays.
 
+Starting Station:
+Step 1: Filter weekday trips to select only those that start during a rush hour.
+Step 2: Select relevant columns (starting station name, starting station id, start hour).
+Step 3: Count the number of occurrences of each station name and arrange them in descending order.
+Step 4: Select the top 10 and save it.
+
+Ending Station:
+Step 1: Extract all trip data that ended on a weekday.
+Step 2: Filter weekday trips to select only those that end during a rush hour.
+Step 3: Select relevant columns (ending station name, ending station id, end hour).
+Step 4: Count the number of occurrences of each station name and arrange them in descending order.
+Step 5: Select the top 10 and save it.
 
 # Top-10-Weekend-branch
 
+Starting Station:
+Step 1: Filter for trips that start on a weekend (Sat - Sun).
+Step 2: Select relevant columns (starting station name, starting station id, start hour).
+Step 3: Count the number of occurrences of each station name and arrange them in descending order.
+Step 4: Select the top 10 and save it.
+
+Ending Station:
+Step 1: Filter for trips that end on a weekend (Sat - Sun).
+Step 2: Select relevant columns (starting station name, starting station id, start hour).
+Step 3: Count the number of occurrences of each station name and arrange them in descending order.
+Step 4: Select the top 10 and save it.
 
 # Monthly-Bike-Utilization-branch
+Calculate the average utilization of bikes for each month (total time used/total time in month). Specifically for each bike for each month.
+Step 1: Extract all unique bike ids.
+Step 2: Create an empty dataframe to store the monthly utilization rate for each bike.
+Step 3: Add a new column in the trips dataset that extracts the month from the start date of the trip.
+
+Complete the following action in a loop so that it applies for each bike:
+Step 4: Filter the data for the current bike id.
+Step 5: Group the filtered data by month and calculate the total duration for each month.
+Step 6: Create a new column in the filtered set that provides the number of days in each month
+Step 7: Create a new column in the filtered set that calculates the total number of seconds in the month based on the number of days.
+Step 8: Create a new column that calculates the monthly utilization rate by dividing total duration of the trip for each month by the total number of seconds per month.
+Step 9: Create a new column that calculate the monthly utilization rate in percentages.
+Step 10: Create a new column containing the current bike id.
+Step 11: Append the monthly utilization data for the current bike to the monthly utlization rate dataset.
+End loop
+
+Step 11: Rearrange and select the relevant columns.
+Step 12: Sort the dataset by bike ID.
 
 # Correlation-branch
 Determine if weather conditions have an impact on the bike rental patterns. Create a correlation matrix for the new dataset using the cor() function from the corrplot package. Flag the highest correlations for the data science team.
