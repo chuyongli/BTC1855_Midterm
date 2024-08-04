@@ -1,9 +1,17 @@
 # BTC1855 - Midterm
 # By Trinley Palmo
 
+# Install required libraries
+# install.packages("lubridate")
+# install.packages("dplyr")
+# install.packages("funModeling")
+# install.packages("Hmisc")
+
 # Libraries needed
 library(lubridate)
 library(dplyr)
+library(funModeling)
+library(Hmisc)
 
 # Set working directory for where to find the data files
 setwd("C://Users/tpalm/Desktop/MY FILES/UofT/MBiotech/BTC1855/babs")
@@ -94,6 +102,19 @@ which(trips1$zip_code == "")
 trips1$start_date <- mdy_hm(trips1$start_date)
 trips1$end_date <- mdy_hm(trips1$end_date)
 
+# Create a function for conducting exploratory data analysis
+eda <- function(df) {
+  glimpse(df)
+  freq(df)
+  plot_num(df)
+  print(profiling_num(df))
+  describe(df)
+}
+
+# Conduct EDA for the weather and trips datasets
+eda(weather1)
+eda(trips1)
+
 # Find the observations where the trip starts and ends at the same station.
 same_station_row <- which(trips1$start_station_id == trips1$end_station_id)
 # Select just the rows for trips that might be cancelled trips.
@@ -119,3 +140,4 @@ num_cancelled <- length(cancelled_id)
 # Remove the cancelled trips from the dataset.
 trips_valid <- trips1 %>%
   filter(!(id %in% cancelled_id))
+
