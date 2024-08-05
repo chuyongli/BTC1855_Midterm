@@ -93,11 +93,7 @@ Step 12: Sort the dataset by bike ID.
 # Correlation-branch
 Determine if weather conditions have an impact on the bike rental patterns. Create a correlation matrix for the new dataset using the cor() function from the corrplot package. Flag the highest correlations for the data science team.
 Step 1: Add a `city` column to trips dataset by performing a left join with the stations dataset, based on their station names (Make sure that the station names are either all lowercase or all uppercase so that they are standardized).
-Step 2: Determine if there are any more missing city values. If there are more missing city values, extract those that are missing city and are NOT missing zip code values.
-Step 3: Extract all unique city and zip code observations from the weather data.
-Step 4: Fill in the extracted missing city observations through joining them with the unique city and zip code data by the zip code column. It will fill in the city based on matching zip codes.
-Step 5: Combine the initially joined trips dataframe with the updated city information from the missing city observations set that was filled in Step 4.
-Step 6: Check if there are any more missing city data - if so, remove those observations.
+Step 2: Determine if there are any more missing city values. If there are more missing city values, remove those observations.
 Step 7: Join the trips data with the weather information.
 Step 8: Compute/summarize daily weather metrics by grouping the data by date and city. Make sure to convert events and cloud_cover from factor to numeric.
 Step 9: Prepare the data metrics for correlation analysis by selecting only numeric variables.
