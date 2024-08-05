@@ -444,6 +444,10 @@ trips_with_city <- new_trips_valid1 %>%
 
 # Check if there are any remaining missing city values.
 any(is.na(trips_with_city$city))
+# Check how many are missing 
+length(which((is.na(trips_with_city$city))))
+# Check if any other columns have missing values.
+describe(trips_with_city)
 
 # Extract observations that have missing city values and are NOT missing zip
 # code information.
