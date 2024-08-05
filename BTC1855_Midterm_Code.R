@@ -123,15 +123,11 @@ for (var in names(trips)) {
   print(paste0("# of empty strings: ",length(which(trips[var] == ""))))
 }
 
-# Impute the empty strings to NAs
+# Drop zip_code column as that only refers to the home zip code of
+# subscribers/users. It does not reflect the zip code of the start or end 
+# stations.
 trips1 <- trips %>%
-  mutate(zip_code = case_when(
-    zip_code == "" ~ NA,
-    .default = zip_code
-  ))
-
-# Confirm that there are no more empty strings in `events`.
-which(trips1$zip_code == "")
+  select(-zip_code)
 
 # Convert start and end dates to datetime objects.
 trips1$start_date <- mdy_hm(trips1$start_date)
