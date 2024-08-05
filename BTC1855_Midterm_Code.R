@@ -210,6 +210,11 @@ hist(trips_valid1$duration)
 
 # Identify the trip id and number of trips that were removed as outliers
 outlier_trips_id <- setdiff(trips_valid$id, trips_valid1$id)
+# Convert to dataframe and export it as .csv
+outliers_df <- as.data.frame(outlier_trips_id)
+write.csv(outliers_df, 
+          file = "C://Users/tpalm/Desktop/MY FILES/UofT/MBiotech/BTC1855/BTC1855_Midterm/outliers_trip_ids.csv", 
+          row.names = FALSE)
 num_outliers_trips <- length(outlier_trips_id)
 
 # Extract weekday and hour information for each trip
