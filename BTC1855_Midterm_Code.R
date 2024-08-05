@@ -104,6 +104,11 @@ weather1 <- weather %>%
 # Confirm that there are no more empty strings in `events`.
 which(weather1$events == "")
 
+# Remove all NAs in weather1
+weather2 <- na.omit(weather1)
+dropped_na <- nrow(weather1) - nrow(weather2)
+dropped_na
+
 # Explore the `trips` dataset.
 dim(trips)
 str(trips)
@@ -418,13 +423,6 @@ write.csv(monthly_utilization,
           row.names = FALSE)
 
 ## Correlation
-# Cleaning up the weather dataset further
-nrow(weather1)
-weather2 <- na.omit(weather1)
-nrow(weather2)
-print((1825-1301) < (0.3*1825))
-# The number of missing data is less than 30% of the original data - it's okay
-# to remove.
 
 #' Add a `city` column to trips dataset by performing a left join with the 
 #' stations dataset, based on their station names (Make sure that the station 
