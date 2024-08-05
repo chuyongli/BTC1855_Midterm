@@ -96,7 +96,7 @@ for (var in names(weather)) {
 # Create a new dataframe where the empty strings in events are imputed to "None".
 weather1 <- weather %>%
   mutate(events = case_when(
-    events == "" ~ "None",
+    events == "" ~ "none",
     .default = events))
 
 # Confirm that there are no more empty strings in `events`.
