@@ -162,6 +162,12 @@ cancelled <- potential_cancelled %>%
 
 # Trip IDs of trips that are likely to be "cancelled trips"
 cancelled_id <- cancelled$id
+# Convert to dataframe and export it as .csv
+cancelled_df <- as.data.frame(cancelled_id) %>%
+  rename(cancelled_trip_id = cancelled_id)
+write.csv(cancelled_df, 
+          file = "C://Users/tpalm/Desktop/MY FILES/UofT/MBiotech/BTC1855/BTC1855_Midterm/cancelled_trip_ids.csv", 
+          row.names = FALSE)
 # Number of these likely "cancelled trips"
 num_cancelled <- length(cancelled_id)
 
