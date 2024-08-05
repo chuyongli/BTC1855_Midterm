@@ -47,6 +47,11 @@ for (var in names(stations)) {
 length(unique(stations$name)) == nrow(stations)
 # There are no duplicates
 
+# Check the unique cities that these stations are found in.
+cities <- unique(stations$city)
+cities
+length(cities)
+
 # Next, work with the `weather` dataset.
 # Explore the `weather` dataset.
 dim(weather)
