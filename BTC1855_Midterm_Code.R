@@ -550,6 +550,9 @@ trip_weather_corrplot <- corrplot(correlation_matrix,
                                   tl.srt = 45,
                                   mar=c(0,0,2,0)) 
 
+# Convert the full correlation_matrix to a dataframe
+correlation_matrix_df <- as.data.frame(as.table(correlation_matrix))
+
 # Extract weather_measures
 weather_measures <- correlation_data %>%
   select(-daily_rentals, -total_duration) %>% names()
