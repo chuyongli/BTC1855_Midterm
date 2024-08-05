@@ -7,6 +7,7 @@
 # install.packages("funModeling")
 # install.packages("Hmisc")
 # install.packages("corrplot")
+# install.packages("tidyr")
 
 # Libraries needed
 library(lubridate)
@@ -14,6 +15,7 @@ library(dplyr)
 library(funModeling)
 library(Hmisc)
 library(corrplot)
+library(tidyr)
 
 # Set working directory for where to find the data files
 setwd("C://Users/tpalm/Desktop/MY FILES/UofT/MBiotech/BTC1855/babs")
