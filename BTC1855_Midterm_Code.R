@@ -567,13 +567,13 @@ weather_measures <- correlation_data %>%
 # with itself, and correlations where both variables are in weather measures. 
 # This allows us to focus on how weather impacts bike rental patterns and not on
 # each other.
-correlation_df <- as.data.frame(as.table(correlation_matrix)) %>%
+correlation_matrix_mod <- correlation_matrix_df %>%
   filter(Var1 != Var2) %>%
   filter(!(Var1 %in% weather_measures 
            & Var2 %in% weather_measures))
 
 # Find the highest positive and negative correlations
-highest_correlation <- correlation_df %>%
+highest_correlation <- correlation_matrix_mod %>%
   arrange(desc(abs(Freq)))
 
 highest_correlation
