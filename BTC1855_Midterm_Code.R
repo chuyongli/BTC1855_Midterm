@@ -398,6 +398,10 @@ monthly_utilization <- monthly_utilization %>%
   select(bike_id, month, monthly_util, monthly_util_percent) %>%
   arrange(bike_id)
 monthly_utilization
+# Export it as a CSV
+write.csv(monthly_utilization, 
+          file = "C://Users/tpalm/Desktop/MY FILES/UofT/MBiotech/BTC1855/BTC1855_Midterm/monthly_utilization.csv", 
+          row.names = FALSE)
 
 ## Correlation
 # Cleaning up the weather dataset further
