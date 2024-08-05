@@ -241,7 +241,8 @@ rush_hour_hist <- ggplot(hours_tracker, aes(x = hour, y = active_trips)) +
   labs(title = "Active Trips Per Hour During Weekdays",
        x = "Hour of Day",
        y = "Number of Active Trips") +
-  theme_minimal()
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold"))
 rush_hour_hist
 
 # Identify the top 5 rush hours
