@@ -569,3 +569,5 @@ highest_correlation <- correlation_df %>%
   arrange(desc(abs(Freq)))
 
 highest_correlation
+write.csv(highest_correlation, file = "C://Users/tpalm/Desktop/MY FILES/UofT/MBiotech/BTC1855/BTC1855_Midterm/trip_weather_correlation.csv", 
+          row.names = FALSE)
