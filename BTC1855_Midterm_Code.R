@@ -322,11 +322,11 @@ trips_valid2_wkd_start <- trips_valid2 %>%
 # each start station name, arrange them in descending order, and returning the
 # first 10.
 
-top_10_station_start <- trips_valid2_wkd_start %>%
+top10_start_station_wkd <- trips_valid2_wkd_start %>%
   count(start_station_name) %>%
   arrange(desc(n)) %>%
   head(10)
-top_10_station_start
+top10_start_station_wkd$start_station_name
 
 # Ending station
 # Filter for trips that end on a weekend (Sat - Sun) and select the relevant 
@@ -338,11 +338,11 @@ trips_valid2_wkd_end <- trips_valid2 %>%
 # Calculate top 10 ending stations by counting the number of occurrences of
 # each end station name, arrange them in descending order, and returning the
 # first 10.
-top_10_station_end <- trips_valid2_wkd_end %>%
+top10_end_station_wkd <- trips_valid2_wkd_end %>%
   count(end_station_name) %>%
   arrange(desc(n)) %>%
   head(10)
-top_10_station_end
+top10_end_station_wkd$end_station_name
 
 # Calculate the average utilization of each bike for each month 
 # (total time used/total time in month). 
