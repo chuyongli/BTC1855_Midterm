@@ -448,6 +448,11 @@ any(is.na(trips_with_city$city))
 length(which((is.na(trips_with_city$city))))
 # Check if any other columns have missing values.
 describe(trips_with_city)
+# No other columns are missing values. 5598 observations have missing city
+# information. The remaining stations do not have sufficient information to
+# identify their city. We need to know the city for each trip in order to join 
+# with weather data. Remove those observations.
+trips_with_city2 <- na.omit(trips_with_city)
 
 # Extract observations that have missing city values and are NOT missing zip
 # code information.
