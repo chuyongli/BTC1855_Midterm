@@ -530,7 +530,7 @@ correlation_matrix
 
 # Visualize the correlation matrix
 trip_weather_corrplot <- corrplot(correlation_matrix, 
-                                  title = "Correlation Plot of Bike Rental Patterns\nand Weather Metrics",
+                                  title = "Correlation Plot of Bike Rental Patterns and Weather Metrics",
                                   method = "color", 
                                   type = "upper", 
                                   order = "hclust",
