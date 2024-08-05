@@ -454,45 +454,6 @@ describe(trips_with_city)
 # with weather data. Remove those observations.
 trips_with_city2 <- na.omit(trips_with_city)
 
-# Extract observations that have missing city values and are NOT missing zip
-# code information.
-missing_city_trips <- trips_with_city %>%
-  filter(is.na(city) & !is.na(zip_code))
-
-# Remove duplicates from weather. This produces a dataframe that provides unique
-# city and zip codes, which can be used to update the missing city observations. 
-zip_code_city <- weather2 %>%
-  distinct(zip_code, city)
-
-# Join the zip_code_city to the extracted missing city rows. This will fill in 
-# the city based on matching zip codes. Then extract just the id of the
-# observation and the city column. This will be used to join with the previous
-# dataframe from which missing city observations were extracted from.
-missing_city_filled <- missing_city_trips %>%
-  left_join(zip_code_city, by = "zip_code") %>%
-  rename(start_city = city.y) %>%
-  select(id, start_city)
-
-# Combine the original dataframe with the updated city information. Remove 
-# start city and zip code columns.
-trips_with_city2 <- trips_with_city %>%
-  left_join(missing_city_filled, by = "id") %>%
-  mutate(
-    city = if_else(is.na(city), start_city, city)) %>%
-  select(-start_city, -zip_code)
-
-# Check for missing values
-any(is.na(trips_with_city2))
-length(which(is.na(trips_with_city2)))
-# Check which columns are missing with values
-describe(trips_with_city2)
-# Missing values are only in the city column. 4955 observations have missing
-# city information. 
-# The remaining stations do not have sufficient information to identify their 
-# city or zip code. As a result, we cannot obtain weather information for them
-# for this analysis. Thus, they are removed.
-trips_with_city2 <- na.omit(trips_with_city2)
-
 # Join the trips data with the weather information by date and city. Make events
 # column into a factor, after making all NA events into `None`. The factor should
 # have levels and be ordered. Convert cloud_cover into a factor as well.
