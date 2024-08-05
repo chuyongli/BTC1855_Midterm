@@ -477,7 +477,7 @@ trips_with_city2 <- trips_with_city %>%
   select(-start_city, -zip_code)
 
 # Check for missing values
-any(is.na(trips_valid))
+any(is.na(trips_with_city2))
 length(which(is.na(trips_with_city2)))
 # Check which columns are missing with values
 describe(trips_with_city2)
