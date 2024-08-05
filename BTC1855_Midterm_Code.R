@@ -41,6 +41,11 @@ for (var in names(stations)) {
   print(var)
   print(paste0("# of empty strings: ",length(which(stations[var] == ""))))
 }
+# There are no empty strings
+
+# Check if there are duplicate stations
+length(unique(stations$name)) == nrow(stations)
+# There are no duplicates
 
 # Next, work with the `weather` dataset.
 # Explore the `weather` dataset.
