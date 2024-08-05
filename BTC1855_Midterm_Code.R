@@ -45,6 +45,16 @@ summary(weather)
 # Convert date to datetime objects.
 weather$date <- mdy(weather$date)
 
+# Check if precipiation measure has any alpha characters in it
+head(sort(weather$precipitation_inches))
+tail(sort(weather$precipitation_inches))
+
+# `T` represents when amount is less than 0.01in. Impute the `T` to 0.001.
+weather <- weather %>% mutate(
+  precipitation_inches = case_when(
+    precipitation_inches == 'T' ~ "0.001",
+    .default = precipitation_inches))
+
 # Convert precipitation measure into numeric objects.
 weather$precipitation_inches <- as.numeric(weather$precipitation_inches)
 
