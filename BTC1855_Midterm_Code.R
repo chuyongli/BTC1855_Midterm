@@ -553,6 +553,11 @@ trip_weather_corrplot <- corrplot(correlation_matrix,
 # Convert the full correlation_matrix to a dataframe
 correlation_matrix_df <- as.data.frame(as.table(correlation_matrix))
 
+# Export it as .csv
+write.csv(correlation_matrix_df, 
+          file = "C://Users/tpalm/Desktop/MY FILES/UofT/MBiotech/BTC1855/BTC1855_Midterm/full_trip_weather_correlation.csv", 
+          row.names = FALSE)
+
 # Extract weather_measures
 weather_measures <- correlation_data %>%
   select(-daily_rentals, -total_duration) %>% names()
