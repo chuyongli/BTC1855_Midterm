@@ -179,6 +179,11 @@ hist(trips_valid$duration)
 # Check extreme values on both ends of duration
 head(sort(trips_valid$duration), 20)
 head(sort(trips_valid$duration, decreasing = T), 20)
+# Use log10 to better visualize the duration data. This will help with 
+# identifying potential patterns and outliers.
+hist(log10(trips_valid$duration))
+# Most duration values are below 10^3. Check if the upper limit of the dataset
+# using IQR would compliment this finding.
 
 # Identify first and third quartiles, interquartile range, and the upper and 
 # lower limits of duration.
@@ -187,10 +192,15 @@ duration_q3 <- quantile(trips_valid$duration, probs = 0.75)
 duration_IQR <- IQR(trips_valid$duration)
 duration_upper <-  duration_q3 + 1.5 * duration_IQR
 duration_lower <- duration_q1 - 1.5 * duration_IQR
+duration_upper
+duration_lower
+# The limits are sufficient.
+
 # Remove outliers based on IQR
 trips_valid1 <- trips_valid %>%
   filter(duration_lower < duration) %>%
   filter(duration < duration_upper)
+hist(trips_valid1$duration)
 
 # Identify the trip id and number of trips that were removed as outliers
 outlier_trips_id <- setdiff(trips_valid$id, trips_valid1$id)
