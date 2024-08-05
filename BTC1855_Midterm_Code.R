@@ -32,9 +32,15 @@ summary(stations)
 # Convert installation date to datetime objects.
 stations$installation_date <- mdy(stations$installation_date)
 
-# Check for missing values in `stations` dataset.
+# Check for missing values and empty strings in `stations` dataset.
 any(is.na(stations))
 # No missing values
+
+# Check for empty strings in `stations` dataset.
+for (var in names(stations)) {
+  print(var)
+  print(paste0("# of empty strings: ",length(which(stations[var] == ""))))
+}
 
 # Next, work with the `weather` dataset.
 # Explore the `weather` dataset.
