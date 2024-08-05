@@ -89,7 +89,7 @@ unique(weather$events)
 # Check number of missing values (NAs and empty strings) in the dataset
 for (var in names(weather)) {
   print(var)
-  print(paste0("# of NAs: ",length(is.na(weather$var))))
+  print(paste0("# of NAs: ",length(is.na(weather[var]))))
   print(paste0("# of empty strings: ",length(which(weather[var] == ""))))
 }
 
